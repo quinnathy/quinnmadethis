@@ -1,0 +1,227 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  line-height: 1.5;
+  background: white;
+
+}
+
+section {
+  padding: 0rem;
+}
+
+a {
+  color: #0F78BF;
+  font-weight: 500;
+  text-decoration-style: dotted;
+  transition:0.3s;
+}
+
+a:hover {
+  color: #074770;
+}
+
+h1 {
+  margin-top: 8vh;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 2rem;
+}
+
+.blocktext {
+  margin: 0 50vh;
+  color: black;
+  font-size: 1.2rem;
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.inlinepic {
+  width: 100%;
+}
+
+.caption {
+  font-size: 0.9rem;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+  font-weight: 400;
+  margin-top: 1vh;
+  color: gray;
+}
+
+.attribution {
+  font-size: 0.9rem;
+  font-family: "Arial", sans-serif;
+  font-weight: 400;
+  color: gray;
+}
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  margin: 5vh 20vh;
+}
+
+.tag {
+  color: black;
+  font-family: "Fira Mono", "DejaVu Sans Mono", "Consolas", monospace;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.funfact {
+  margin-top: 3vh;
+  border-radius: 10px;
+  background-color: #FFDD99;
+  padding: 1rem;
+}
+
+.scrolly {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 10vh;
+}
+
+.scroll__graphic {
+  position: sticky;
+  top: 0;
+  width: 60%;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0rem;
+}
+
+#map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#map-container svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#map1 { z-index: 1; }
+#map2 { z-index: 2; }
+#map3 { z-index: 3; }
+
+
+#map1, #map2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#map1 {
+  opacity: 1;
+}
+
+#map2 {
+  opacity: 0;
+  pointer-events: none; 
+  transition: opacity 1s ease;
+}
+
+#map3 {
+  opacity: 0;
+  pointer-events: none; 
+  transition: opacity 1s ease;
+}
+
+.scroll__text {
+  width: 40%;
+  padding: 1rem;
+  background-color: transparent;
+}
+
+.step {
+  margin: 50vh 10vh 0 3vh;
+  font-size: 1.2rem;
+  color: black;
+  font-size: 1.2rem;
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.chart-container {
+  margin-top: 20vh;
+}
+
+.num {
+  font-weight: 600;
+}
+
+#chart {
+  margin:0;
+}
+
+#waitChart {
+  width: 80%;
+  margin: 2rem auto;
+}
+
+.datawrapper {
+  margin: 2vh 0;
+}
+
+#backToTop {
+  width:100%;
+  border-radius: 20px;
+  padding: 1vh;
+  border-width: 3px;
+  transition: 0.2s ease-in-out;
+  margin-top: 1vh;
+  margin-bottom: 0;
+  font-family: "Fira Mono", "DejaVu Sans Mono", "Consolas", monospace;
+  font-weight: bold;
+}
+
+#backToTop:hover {
+  cursor:pointer;
+  background-color: black;
+  color: white;
+}
+
+/* nutshell related */
+
+nutshell-bubble-from{
+  display:none;
+}
+nutshell-bubble-overflow-close {
+  margin: 10vh;
+}
+
+@media only screen and (max-width: 1250px) {
+  .blocktext {
+    margin: 0 20vh;
+  }
+
+  .tag-container {
+    margin: 5vh 10vh;
+  }
+}
+
+@media only screen and (max-width: 710px) {
+  .blocktext {
+    margin: 0 2vh;
+  }
+  .tag-container {
+    margin: 5vh 2vh;
+  }
+}

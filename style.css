@@ -1,0 +1,80 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+main {
+    margin: auto;
+    max-width: 80ch;
+    width: 100%;
+    padding: 1rem;
+    margin-top: 12vh;
+    font-family: "Consolas", "Lucida Console", monospace;
+    margin-bottom: 20vh;
+    line-height: 1.2em;
+}
+
+#fn {
+    font-family: "Consolas", "Lucida Console", monospace;
+}
+
+.extra2 {
+    display: none;
+}
+
+a:link {
+    color: blue;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a:hover {
+    background-color: yellow;
+}
+
+a:visited {
+    color: purple;
+    text-decoration: none;
+}
+
+@media screen and (max-aspect-ratio: 1/1) {
+    html, body {
+        overflow-x: hidden; 
+        overflow: scroll;
+    }
+
+    main {
+        padding: 4vw;
+        margin: 3vh auto;
+        width: 90vw;
+        max-width: 600px;
+    }
+
+    p {
+        font-size: 1rem;
+        line-height: 1.2;
+    }
+
+    h4 {
+        font-size: 1.3rem;
+    }
+
+    h3 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .extra {
+        display: none;
+    }
+
+    .extra2 {
+        display: block;
+    }
+
+    #info {
+        text-align: center;
+    }
+}
