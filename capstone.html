@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How a nationwide surveillance network was built on your data, by your hands</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Recursive:wght@300..1000&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-light: #4F4F4F;
+    --ink-muted: #5C5C5C;
+    --accent: #2947CC;
+    --bg: #faf8f5;
+    --rule: #ddd;
+    --max: 680px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #FFFEFA;
+    color: var(--ink);
+    font-family: 'Literata', Georgia, serif;
+    font-size: 2.2vh;
+    font-weight: 350;
+    line-height: 1.3;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Cookie Banner */
+  #cookie-banner {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+    padding: 16px 28px;
+    z-index: 9999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+  }
+  #cookie-banner.hidden {
+    transform: translateY(110%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .cookie-text { flex: 1; min-width: 260px; line-height: 1.55; }
+  .cookie-text strong { color: #111; font-weight: 600; }
+  .cookie-text a { color: #0066cc; text-decoration: underline; cursor: pointer; }
+  .cookie-buttons { display: flex; gap: 10px; flex-shrink: 0; }
+  .cbtn {
+    padding: 9px 20px; border-radius: 4px; font-size: 13px;
+    font-weight: 500; cursor: pointer; border: 1px solid transparent;
+    transition: background 0.15s; white-space: nowrap; font-family: inherit;
+  }
+  .cbtn-outline { background: #fff; border-color: #ccc; color: #333; }
+  .cbtn-outline:hover { background: #f5f5f5; }
+  .cbtn-fill { background: #0066cc; color: #fff; border-color: #0066cc; }
+  .cbtn-fill:hover { background: #0052a3; }
+
+  /* Modal */
+  #modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 10000;
+    align-items: center; justify-content: center;
+  }
+  #modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff; border-radius: 8px; padding: 30px;
+    max-width: 440px; width: 90%;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.16);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 13px; color: #333;
+  }
+  .modal h3 { font-size: 16px; font-weight: 600; color: #111; margin-bottom: 10px; }
+  .modal p { line-height: 1.6; color: #555; margin-bottom: 18px; }
+  .trow {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-top: 1px solid #eee;
+  }
+  .trow:last-of-type { border-bottom: 1px solid #eee; margin-bottom: 20px; }
+  .tlabel strong { display: block; font-weight: 500; color: #222; margin-bottom: 2px; }
+  .tlabel span { font-size: 12px; color: #888; }
+  .toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; inset: 0; background: #ccc;
+    border-radius: 22px; cursor: pointer; transition: background 0.2s;
+  }
+  .slider:before {
+    content: ''; position: absolute;
+    width: 16px; height: 16px; left: 3px; top: 3px;
+    background: #fff; border-radius: 50%; transition: transform 0.2s;
+  }
+  .toggle input:checked + .slider { background: #0066cc; }
+  .toggle input:checked + .slider:before { transform: translateX(18px); }
+  .toggle input:disabled + .slider { background: #0066cc; opacity: 0.65; cursor: not-allowed; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* Article */
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 72px 24px 120px; }
+
+  .label {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 22px;
+  }
+
+  h1 {
+    font-family: 'Recursive', Arial, monospace;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 800; line-height: 1;
+    color: #090033; margin-bottom: 22px;
+    letter-spacing: -0.01em;
+  }
+
+  .dek {
+    font-family: 'Recursive', Arial, monospace;
+    font-size: 17px; font-weight: 400;letter-spacing: -0.02em;
+    color: var(--ink-light); line-height: 1.18em; margin-bottom: 32px;
+  }
+
+  .byline {
+    font-family: 'Recursive', Arial, monospace;
+    font-size: 17px; font-weight: 400;letter-spacing: -0.02em;
+    color: white; background-color: black; padding:0 3px;
+    margin-right: 1vh;
+    
+  }
+
+  p { margin-bottom: 1.65em; }
+  .lede { font-size: 21px; font-weight: 300; line-height: 1.7; }
+  em { font-style: italic; }
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  a:hover { color: var(--ink); }
+
+  hr.divider { border: none; border-top: 1px solid var(--rule); margin: 52px 0; }
+
+  h2 {
+    font-family: 'Recursive', Arial, monospace;
+    font-size: 25px; font-weight: 800;letter-spacing: -0.03em;
+    line-height: 1.18em; margin-bottom: 32px;
+    color: #090033; 
+    margin: 52px 0 22px;
+  }
+
+  .img-block img { margin: 36px 0 8px; width: 100%; display: block;}
+  .img-caption {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 12px; color: var(--ink-muted);
+    font-style: italic; margin-top: 8px; line-height: 1.5;
+  }
+
+  .quoted {
+    color: var(--ink-muted);
+  }
+
+  .quoteblock {
+    padding: 1em;
+    text-align: justify;
+    background-color: #F5F4ED;
+  }
+
+  .parent {
+    display: flex;
+    justify-content: center;
+  }
+
+  #backToTop {
+    width: fit-content;
+    border-width: 1px;
+    padding: 2px;
+    margin: 0 auto 1em auto;
+    font-family: 'Recursive', Arial, monospace;
+    font-size: 17px; font-weight: 400;letter-spacing: -0.02em;
+    color: white; background-color: black; padding:0 3px;
+  }
+
+  #backToTop:hover {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    transition: 0.3s;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Cookie Banner -->
+<div id="cookie-banner">
+  <div class="cookie-text">
+    <strong>We value your privacy</strong><br>
+    We use cookies and similar technologies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All," you consent to our use of cookies and for us to sell them to the government, foreign spies, and that one tech company you really hate. <a onclick="return false;">Cookie Policy</a> · <a onclick="return false;">Privacy Policy</a>
+  </div>
+  <div class="cookie-buttons">
+    <button class="cbtn cbtn-outline" onclick="openModal()">Customize</button>
+    <button class="cbtn cbtn-fill" onclick="dismiss()">Accept All</button>
+  </div>
+</div>
+
+<!-- Customize Modal -->
+<div id="modal-overlay">
+  <div class="modal">
+    <h3>Manage Cookie Preferences</h3>
+    <p style="line-height: 1.2;">You can choose which categories of cookies you allow. Note that disabling some types of cookies may impact your experience, and we'll also be really sad.</p>
+    <div class="trow">
+      <div class="tlabel"><strong>"Strictly Necessary"</strong><span>Required for the site to function. Probably.</span></div>
+      <label class="toggle"><input type="checkbox" checked disabled><span class="slider"></span></label>
+    </div>
+    <div class="trow">
+      <div class="tlabel"><strong>Organ Donor Signup</strong><span>By checking this box, you sign up to be an organ donor in the state of New Jersey.</span></div>
+      <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+    <div class="trow">
+      <div class="tlabel"><strong>Steal Candy From Baby</strong><span>We literally will steal candy from a baby on your behalf</span></div>
+      <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+    <div class="trow">
+      <div class="tlabel"><strong>Third-Party Sharing</strong><span>I'm telling everyone I know about your internet history rn</span></div>
+      <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+    <div class="modal-actions">
+      <button class="cbtn cbtn-outline" onclick="closeModal()">Cancel</button>
+      <button class="cbtn cbtn-fill" onclick="dismiss()">Save Preferences</button>
+    </div>
+  </div>
+</div>
+
+<!-- Article -->
+<div class="wrap">
+
+  <h1>How a nationwide surveillance network was built on your data, by your hands</h1>
+
+  <p class="dek"><span class="byline">By Quinn Pu ::</span>Just by existing in modern America, all the information you generate ends up in a searchable dossier for anyone to buy. And this is all completely legal.</p>
+
+  <hr class="divider">
+
+  <p>Let's say that every Wednesday night, your friends host a board game night in their building, about a ten minute drive away from your apartment in Brooklyn. Even though you <em>could</em> take the subway home, you always end up a little too tired to do the three transfers, and an Uber comes out to less than $10 — so more often than not, you splurge for the rideshare home.</p>
+
+  <p>It's a weekly get-together, mundane and comfortable, a break away from your work life and responsibilities. It's supposed to stay just that: a personal, private routine.</p>
+
+  <p>But someone else knows about it.</p>
+
+  <p>They know because last Wednesday, at 8:47 PM, your phone connected to a cell tower two blocks from your friends' address. They know because the Wednesday before that, and the one before that, your Uber app requested a pickup from the same corner at roughly the same time — and Uber, like most apps you've downloaded without a second thought, shares location data with third-party partners. They know what you look like because a license plate reader camera on Atlantic Avenue logged your friend's car, which you were in, and cross-referenced it against a database of registered vehicles tied to known associates.</p>
+
+  <p>None of the companies that collected any of this information are the government. None of them did anything illegal. Most of them told you exactly what they were doing, in a privacy policy you agreed to likely without reading, on a website you visited once to RSVP to a birthday party.</p>
+
+  <p>Somewhere, in a database you will never see and cannot opt out of, all of this has been assembled into a file. It has your name at the top. It knows where you'll probably be next Wednesday at 8:47 PM.</p>
+
+  <p>And it is for sale.</p>
+
+  <hr class="divider">
+
+  <p>I started thinking about all of this because I got scared.</p>
+
+  <p>In 2025, stories began surfacing about people being stopped on their way to work by Immigration and Customs Enforcement, or picked up outside courthouses, or detained at the airport after years of living quietly in the same city. To meet the Trump administration's goal of <a href="https://www.axios.com/2025/12/04/trump-ice-immigration-arrests-deportations" target="_blank">3,000 immigrant arrests a day</a>, ICE agents loiter in <a href="https://abc7.com/post/home-depot-stores-long-hub-day-laborers-now-draw-immigration-agents-raids/17779108/" target="_blank">Home Depot parking lots</a>, knock on residential doors, and <a href="https://news.wttw.com/2025/09/28/armed-federal-agents-tactical-gear-patrol-downtown-chicago-immigration-crackdown" target="_blank">patrol city streets with loaded firearms</a>. The biggest question on my mind quickly became, "How is ICE finding who to detain? Is it a foolproof system?"</p>
+
+  <p>The answer to the first question is straightforward: Law enforcement agencies like ICE have access to digital tools that can reduce a person's entire life to a tidy, searchable file. Not just their name and address and Social Security Numbers, but their routines. Their credit score and spending habits. All without getting a warrant.</p>
+
+  <p>To understand how, you have to go back to a moment you've already forgotten — probably several hundred of them.</p>
+
+  <h2>The bottom of the food chain</h2>
+
+  <p>When this web page loaded, there was a pop-up that you likely accepted. There was no reason to give it a second look — you've probably dismissed thousands of them across your browsing history. Do you remember what it read?</p>
+
+  <p>Millions of company websites offer the same disclaimer, always some variation of <em>We use cookies</em> or <em>We care about your privacy</em> or <em>How we use your information.</em> They describe cookies and similar tracking tools as necessary for advertising and functionality — which is true, but incomplete. Under certain state privacy laws, like California's Consumer Privacy Act, companies are required to disclose if they sell your personal information to third parties. Most do. The disclaimer you just clicked through was, in part, that disclosure.</p>
+
+  <p>That interaction isn't unique to websites. The same exchange happens every time you download an app, create an account, or tap "agree" without reading the tediously long Terms &amp; Conditions. The format might look different — a pop-up becomes a checkbox, a banner becomes a full-screen prompt — but the underlying transaction is the same: access in exchange for data.</p>
+
+  <div class="img-block">
+    <img src="assets/image1.png">
+    <img src="assets/image3.png">
+    <img src="assets/image5.png">
+  </div>
+
+  <p style="margin-top: 1.68em;">Without reading the fine print, you wouldn't learn that these websites collect more than just your browsing history on their platform. You definitely wouldn't know that most of what they gather — your location, your device, your behavior across the web — is sold. Quietly, legally, and without any notification to you.</p>
+
+  <p>The buyers? The data broker industry.</p>  
+
+  <h2>Why and what is data brokering?</h2>
+
+  <p>Data brokers are organizations that aggregate data — by purchasing it from companies or other data brokers — and sell access to it. The industry is worth an estimated <a href="https://www.grandviewresearch.com/industry-analysis/data-broker-market-report" target="_blank">$300 billion</a> annually, and yet, you've almost certainly never interacted with one directly. That's more or less by design.</p>
+
+  <p>The information that data brokers have on you may sound relatively harmless. What can come of cookies collected from an academic paper publication? Or the restaurants you visit and log on a dining app?</p>
+
+  <p>"Much of the harm that comes from our data hanging around online comes from the connections and inferences made from it in combination with other data," Claire Pershan, Mozilla Foundation's EU Advocacy Lead, explains to me over email. She directs me to Mozilla Foundation's petition, <a href="https://www.mozillafoundation.org/en/campaigns/no-data-for-surveillance-tech/" target="_blank">No Data Against Surveillance Tech</a>, which lists all the ways "seemingly innocuous data you share with an individual company can be stitched together to make a profile about you that could put you at risk."</p>
+
+  <div class="quoteblock">
+    <p style="margin-bottom: 2vh;"><strong>GoFundMe + Etsy:</strong> Fundraisers for medical bills, legal aid, or immigration fees can indicate vulnerability — particularly for undocumented people, refugees, or activists needing support.</p>
+    <p style="margin-bottom: 2vh;"><strong>Duolingo + LinkedIn + Glassdoor:</strong> A user learning English or a regional language on Duolingo might be flagged if they also have a job history on LinkedIn or Glassdoor that suggests they recently moved or are working in an industry with high rates of undocumented labor.</p>
+    <p style="margin-bottom: 0vh;"><strong>Google + TripAdvisor + Yelp:</strong> Reviews, location data, and travel history can help create a pattern of movement. Used together, they can reveal where someone lives, works, or regularly travels — even if they never explicitly say it.</p>
+  </div>
+
+  <p style="margin-top: 1.65em">Thomson Reuters is one example of a data broker. Best known for its news division, it also operates a sprawling data services arm — Thomson Reuters Special Services (TRSS) — which offers a tool named CLEAR.</p>
+
+  <div class="img-block">
+    <img src="assets/image4.png">
+    <p class="img-caption">A screenshot of CLEAR's interface, taken from its <a href="https://legal.thomsonreuters.com/en/products/clear" target="_blank">official product page</a>.</p>
+  </div>
+
+  <p>Type a name into CLEAR and within seconds you can pull up a subject's current and historical addresses, phone numbers, email accounts, employment history, vehicle registrations, professional licenses, court records, and known associates. It draws on billions of records updated daily — private and public alike — and presents all of it in a single, searchable profile.</p>
+
+  <p>One of the services CLEAR offers is a "risk inform score" generator, featured in a <a href="https://www.cohenmilstein.com/wp-content/uploads/2023/07/Brooks-v-Thomson-Reuters-CLEAR-Complaint-11142022.pdf" target="_blank">2025 class action</a> against Thomson Reuters, which compiles all known information about a subject to estimate a numeric risk score based on certain predictions. For example, CLEAR users can pull up an estimated association between a subject and getting an abortion (including "Abortional Act on Self"), or whether a subject would refuse to aid a police officer, and even whether the subject would engage in "Homosexual [Acts]."</p>
+
+  <div class="img-block">
+    <img src="assets/image2.png">
+    <p class="img-caption">A screenshot of CLEAR's risk score generator from the class action filing.</p>
+  </div>
+
+  <p>What could affect your risk score? Maybe your digital geolocation pinged you near an anti-war protest, even if you didn't participate. Maybe your browsing history included searches for mental health resources, or you donated to a charitable organization that the CLEAR algorithm considers politically sensitive. Maybe someone you emailed or messaged triggered a network association flagged by the system. Even your participation in online forums, social media posts, or attendance at certain public events could incrementally change your score.</p>
+
+  <p>This <em>sounds</em> really bad, but what are the actual implications of a predicted risk score? To find out, I email Jennifer Granick, an expert on cybersecurity and surveillance from the American Civil Liberties Union, and ask her what would happen if someone got a bad score in Homosexual Acts.</p>
+
+  <p>"It gives police a reason to go after someone they wouldn't otherwise have a reason to go for," Granick says. Under the Fourth Amendment, she explains to me, law enforcement officers — including both police and ICE agents — require <a href="https://www.law.cornell.edu/wex/probable_cause">'probable cause'</a> before they can obtain a warrant or make an arrest.</p>
+
+  <p>The problem is, 'probable cause' is a fuzzy legal term with no certain parameters, defined only as one step above <a href="https://www.law.cornell.edu/wex/reasonable_suspicion">'reasonable suspicion,'</a> which isn't much better off in clarity. Could these risk scores then constitute probable cause?</p>
+
+  <p>“We haven’t really dealt with that,” Granick admits, but points out that it would likely be a step up from current ICE protocols for finding detainees, which she sarcastically summarizes as “[getting] everybody at the Hyundai factory,” and “[getting] everybody in this neighborhood of Minneapolis, because they’re all probably illegally here from Somalia anyway.”</p>
+
+  <p>What’s worse is that tools like CLEAR may draw from data sources you thought truly private — your utility company and your credit card issuer, to name a few. Providers like ConEd describe their data policies as confidential, shared only with parties you explicitly authorize. But for thousands of utility companies, banks, lenders, and more, your personal information goes directly to credit bureaus like Equifax, Experian, or TransUnion. </p>
+
+  <p>Equifax, in particular, manages a utility database of over 217 million unique customers — and <a href="https://www.congress.gov/117/meeting/house/115009/documents/HHRG-117-JU00-20220719-SD014.pdf" target="_blank">the credit bureau directly licenses with Thomson Reuters</a> to give the data broker access to its utility database.</p>
+
+  <p>One other notable company that often employs the use of data brokers is Palantir, a data analytics company founded in 2003 with early backing from the CIA's venture capital arm. Palantir occupies a peculiar position in this ecosystem. Unlike CLEAR, which is itself a data product, Palantir doesn't primarily sell data, but instead the infrastructure to make data useful.</p>
+
+  <p>The most concrete example of what that looks like in practice is ELITE — Enhanced Leads Identification &amp; Targeting for Enforcement — a <a href="https://www.404media.co/elite-the-palantir-app-ice-uses-to-find-neighborhoods-to-raid/" target="_blank">Palantir tool built for ICE</a> that populates a map with potential deportation targets, brings up a dossier on each person, and generates an address "confidence score" based on data sourced from the Department of Health and Human Services and other government agencies.</p>
+
+  <p>Using the app, ICE agents can select individual targets or draw a shape around a selected area on the map. In a <a href="https://www.chronline.com/stories/oregon-lawyers-seek-court-order-to-halt-ice-warrantless-arrests,394264" target="_blank">sworn deposition</a>, an officer with ICE's Fugitive Operations Unit confirmed that agents used ELITE to find "target-rich" areas — neighborhoods, essentially, where the algorithm predicted the highest concentration of detainable people. Among the data sources feeding those confidence scores? Medicaid records, DMV files, utility bills, and court records.</p>
+
+  <p>“It’s a big problem that government authorities hold large amounts of personal data; the more data they hold, the more it can be misused,” Daniel Berntsson, co-founder of the privacy-centered VPN company Mullvad VPN, tells me in an email, “but it can also often be difficult to protect oneself against this, since there are many registers that you must be part of where you have no choice.”</p>
+
+  <h2>The third-party doctrine (or: why this is legal)</h2>
+
+  <p>There are certain court cases that institute specific digital privacy protections. In <a href="https://supreme.justia.com/cases/federal/us/573/373/" target="_blank"><em>Riley v. California</em></a>, for example, it was established that police aren't allowed to go through your cell phone without a warrant. <a href="https://supreme.justia.com/cases/federal/us/585/16-402/" target="_blank"><em>Carpenter v. United States</em></a> extended that logic, ruling that the government generally needs a warrant to access cell location history from your phone provider. </p>
+
+  <p>"Statutes can protect privacy, and we have a bunch of [specific] statutes," Granick explains. "We have a health privacy statute, we have a privacy statute for children, we have a video rental privacy statute from the olden days when you go into a store and rent video cassettes and stuff."</p>
+
+  <p>However, these protections aren't comprehensive.</p>
+
+  <p>"The Fourth Amendment is our main constitutional protection, and it's really important because constitutional privacy protections apply across the board," Granick says. This is great news.</p>
+
+  <p>"But the Fourth Amendment only applies to government searches and seizures," she adds. "When the data brokers get all your information, the Fourth Amendment doesn't apply, because they're not the government." This information is <em>less</em> great. I find myself wondering if we could trade in the cassette rental statute for something more useful against data brokers.</p>
+
+  <p>"There's no expectation of privacy in your materials when they're held by third parties, which is the third-party doctrine," Granick continues. "So when the government comes for it, you could say it's a search; but when the government gets it from a third party, you don't have the expectation of privacy."</p>
+
+  <p>The third-party doctrine allows data brokers to operate not only as they were, but with the additional possible backing of federal and state governments — becoming, in effect, a privatized surveillance infrastructure that the government can purchase access to without ever triggering Fourth Amendment scrutiny. Or, in simpler terms, as I confirm with Granick:</p>
+
+    <p>"So it's not legal for [police] to go, <span class="quoted">'Let me see your phone and what's in it'</span>," I say, "but it's legal for them to go, <span class="quoted">'I'm going to now buy the database that has everything in your phone and also everything that's in millions of people's phones'</span>?"</p>
+    <p>A pause.</p>
+    <p>"Mhm," Granick says.</p>
+    <p>"Okay. Cool. Great."</p>
+
+  <p>Suddenly, ICE's contracts with Thomson Reuters and Palantir make a lot more sense. As William Owen, Communications Director at the Surveillance Technology Oversight Project (STOP), put it to me during a later call, "These companies end up providing ICE a back door to sidestep local sanctuary laws."</p>
+
+  <h2>What if I'm neither an immigrant nor a homosexual?</h2>
+
+  <p>… is what you might be thinking, or at least something along those lines. You wonder why you should be worrying about any of this if you're not an undocumented immigrant, or a criminal, or anyone that could draw the ire of law enforcement. This surveillance doesn't affect <em>you</em>, after all.</p>
+
+  <p>The reality is that, yes, it doesn't affect you. For now.</p>
+
+  <p>These tools by Thomson Reuters and Palantir exist regardless of who uses them. Right now, ICE is using these tools to target immigrants in pursuit of a deportation quota, but that could very easily change. The next majority party could run on an anti-firearm platform, for example, and CLEAR — which has a section in its risk inform scores all about "Weapons Offenses" — could be used to monitor and negatively label those who own guns.</p>
+
+  <p>Besides, you should be concerned about your baseline right to privacy, because it's not as one-dimensional as the ability to change your clothes without someone looking, or knowing that if you delete your browsing history it's gone for good. As Marianna Poyares — a post-doctoral researcher at the Georgetown Law Privacy Center — puts it, privacy is the backbone to democracy.</p>
+
+  <p>“No democracy can function without privacy rights,” Poyares says. “Democratic life is, in fact, affected if you think that your personal, private data is constantly being harvested, being collected and analyzed, feeding into algorithms that are labeling you as X, Y, and Z.”</p>
+
+  <p>This concern isn't hypothetical. When people know, or even just <em>suspect</em>, that they're being watched, they <a href="https://btlj.org/data/articles2016/vol31/31_1/0117_0182_Penney_ChillingEffects_WEB.pdf" target="_blank">change their behavior</a>. You've done it before! Maybe it's when you instinctively closed your tab on your laptop when you thought you heard someone walk up behind you. Maybe you avoid looking up certain terms or phrases because you're worried the FBI agent tapping your phone will raise an eyebrow.</p>
+
+  <p>“The reality is,” Poyares says, “[democracy requires] the ability of people to just exist, gather, and speak without fear of intimidation, or fear of an algorithm putting a label on them.”</p>
+
+  <h2>What do we do now?</h2>
+
+  <p>There are actions we can take at an individual level to minimize the extent of information data brokers get from us. Saying no to cookies is a start, as well as clicking <em>Do Not Sell My Information</em>. As Berntsson puts it, "The mass surveillance carried out by private companies can be limited through VPN services, privacy-focused browsers, and by opting out of services that track you. But most people do not do this," he adds.</p>
+
+  <p>However, as we've established, there are services we can't opt out of. To fix that, we need to go a level up. Mozilla Foundation's Claire Pershan is one of many privacy experts that agree that data privacy needs to start with the companies giving our information away.</p>
+
+  <p>"The business of data brokers should simply not exist," Pershan asserts. "But as long as it does, that moves the burden over to companies to handle our data with care."</p>
+
+  <p>Ultimately, though, companies can only do so much. For privacy protections to be sweeping and comprehensive, something has to happen at the legislative level.</p>
+
+  <p>"As the surveillance state continues to grow at a rapid pace, it'll put together an unprecedented amount of data," Owen says. "It's up to lawmakers to ensure that Americans are protected from invasive spying. And it's also up to companies to ensure that they protect customers from the federal government, to not collect or retain the data that will then be used for surveillance."</p>
+
+  <p>But if it's government agencies who profit from a lack of privacy legislation, how can we rely on them to protect us? How can we change their mind?</p>
+
+  <p>"There's another angle for it, which is political activism," Granick tells me, as I stew in the wake of her legal explanations. "When people get together and oppose something, it matters. I mean, that was the basis of the civil rights movement, and it's a basis here, too."</p>
+
+  <p>You have more say in this than you realize. It's your money that funds these private companies, your data that they collect, your vote that chooses your representative. Knowing about the existence of data brokers already gives you a big advantage over them, who rely on your ignorance to operate without scrutiny, without regulation, and without consequence.</p>
+
+  <p>“Right now, we’re seeing regular people who are going, ‘What the hell?’” Granick says. “And I think that really matters — and really makes a difference.”</p>
+
+  <hr class="divider">
+
+  <div class="parent">
+
+    <button id="backToTop">Back to top</button>
+
+  </div>
+  <p style="font-family: Arial, sans-serif; color:gray;font-size: 1.8vh;margin-bottom:10vh;text-align:center">(Or back to <a href="https://quinnmadethis.com">quinnmadethis.com</a>.)</p>
+
+</div>
+
+<script>
+  function dismiss() {
+    document.getElementById('cookie-banner').classList.add('hidden');
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+  function openModal() {
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  const backToTop = document.getElementById("backToTop");
+
+    backToTop.addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+</script>
+</body>
+</html>
