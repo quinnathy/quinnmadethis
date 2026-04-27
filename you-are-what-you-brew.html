@@ -5,13 +5,235 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>You Are What You Brew</title>
-    <link rel="stylesheet" href="coffee_style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IBM+Plex+Sans&display=swap" rel="stylesheet">
 
+    <style>
+
+      .dm-sans-font {
+        font-family: "DM Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      body, html {
+        margin: 0;
+        height: 100%;
+        background-color: #472C1C;
+      }
+
+      main {
+        margin: 0 30vh;
+        background-color: white;
+        margin-top:0;
+        padding-top:0;
+      }
+
+      .bodytext {
+        margin: 0 20vh;
+      }
+
+      p {
+        margin: 2vh 0;
+        font-family: "DM Sans", sans-serif;
+        font-size: 19px;
+        letter-spacing: -0.5px;
+      }
+
+      h1 {
+        margin-top: 0vh;
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      .info {
+        border-radius: 2vh;
+        border: 2px solid black;
+        padding: 2vh 3vh 2vh 0;
+      }
+
+      .container {
+        display:flex;
+        justify-content: space-between;
+      }
+
+      .right {
+        display:flex;
+        flex-direction:column;
+        width: 20%;
+      }
+
+      .left {
+        width: 80%;
+        margin: 1vh 3vh;
+        display:flex;
+        align-items: center; 
+      }
+
+      #display {
+        margin:0;
+        width: 100%;
+      }
+
+      .datawrapper {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom:5vh;
+        margin-top: 3vh;
+      }
+
+      .twographs {
+        display:flex;
+        margin-top: 3vh;
+        margin-bottom: 5vh;
+        max-width: 50%;
+        justify-content: space-between;
+        gap:10px;
+      }
+
+      .quinntegories {
+        display: flex;
+        gap: 1vh;
+      }
+
+      .quinntegory {
+        border: 2px solid black;
+        border-radius: 10px;
+        padding: 0 2vh;
+        text-align: center;
+      }
+
+      h2 {
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      h3 {
+        font-size: 15px;
+        margin-bottom:0;
+        color: #B0B0B0;
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      h4 {
+        margin: 1vh 0vh 2vh 0vh;
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      img{
+        height:20vh;
+        animation: tilt-snap 1s steps(1) infinite;
+      }
+          
+      @keyframes tilt-snap {
+        0%   { transform: rotate(-3deg); }
+        50%  { transform: rotate(3deg); }
+        100% { transform: rotate(-3deg); }
+      }
+
+      button {
+        color: black;
+        background-color: white;
+        border-radius: 10px;
+        border: 1px solid black;
+        margin: 0.5vh 0;
+      }
+
+      button:hover{
+        background-color:antiquewhite;
+        transition:0.2s;
+        cursor:pointer;
+      }
+
+      #caption {
+        text-align:center;
+        font-size: 15px;
+        margin-top:0.5vh;
+        opacity:0.5;
+      }
+
+      .attribution {
+        font-size: 0.9rem;
+        font-family: "Arial", sans-serif;
+        font-weight: 400;
+        color: gray;
+      }
+
+      #backToTop {
+        width:100%;
+        border-radius: 20px;
+        padding: 1vh;
+        border-width: 3px;
+        transition: 0.2s ease-in-out;
+        margin-top: 1vh;
+        margin-bottom: 0;
+        font-family: "Fira Mono", "DejaVu Sans Mono", "Consolas", monospace;
+        font-weight: bold;
+      }
+
+      #backToTop:hover {
+        background-color:#D6D6D6;
+      }
+
+      @media (max-width: 1400px) {
+        .datawrapper {
+          max-width:100%;
+        }
+      }
+
+      @media (max-width: 900px) {
+        main {
+          margin: 0; 
+        }
+
+        .bodytext {
+          margin: 0 5%; 
+          padding: 20px 0;
+        }
+
+        .container, .twographs {
+          flex-direction: column;
+        }
+
+        .left, .right {
+          width: 100%;
+          margin: 10px 0;
+        }
+
+        .quinntegories {
+          display: grid;
+          grid-template-columns: 1fr 1fr; 
+        }
+
+        img {
+          height: 120px;
+          margin: 10px auto;
+        }
+
+        .twographs iframe {
+          width: 100% !important;
+          margin-bottom: 20px;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+
 </head>
+
+
 
 <body>
     <main>
@@ -94,10 +316,10 @@
               </div>
 
               <div class="container" style="margin-bottom:3vh">
-                <img src="pourover.png" style="animation-delay: 0s">
-                <img src="espresso.png" style="animation-delay: 0.4s">
-                <img src="frenchpress.png" style="animation-delay: 0.3s">
-                <img src="machine.png" style="animation-delay: 0.1s">
+                <img src="assets/pourover.png" style="animation-delay: 0s">
+                <img src="assets/espresso.png" style="animation-delay: 0.4s">
+                <img src="assets/frenchpress.png" style="animation-delay: 0.3s">
+                <img src="assets/machine.png" style="animation-delay: 0.1s">
               </div>
 
               <p>After drip coffee and espresso brews, people are fairly split between using French presses, coffee machines, and cold brew concentrate. Cold brew is popular among those who prefer convenience, as a bottle of concentrate can last you weeks, and your morning drink can be done in a few seconds.</p>
@@ -175,14 +397,36 @@
             <br>
           </div>
     </main>
-
-    <script src="coffee_script.js"></script>
     <script>
 
     const backToTop = document.getElementById("backToTop");
 
     backToTop.addEventListener("click", function() {
       window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    const textMap = {
+      at_home: "Most at-home coffee drinkers are 35~44 year-old white/Caucasian men who label themselves as Democrats.",
+      on_go: "Most people who drink coffee on the go are 25~34 year-old women who are politically independent.",
+      at_office: "Most coffee drinkers in the office are 25~34 year-old Asian/Pacific Islander men who describe themselves as politically unaffiliated.",
+      at_cafe: "Most who enjoy their coffee at a cafe are 25~34 year-old Asian/Pacific Islander non-binary Democrats.",
+      pour_over:"Most drip enjoyers prefer a fruity undertone in their coffee, and spend an average of $20~$40 a month on coffee. They also rank second in self-proclaimed expertise, at 6.25/10.",
+      espresso:"Espresso lovers tend to enjoy fruity coffee, and spend more monthly, at $40~$60 a month. They've also self-evaluated themselves as the experts of the field.",
+      french_press:"French press users enjoy fruity coffee, and enjoy a light blend.",
+      machine:"Those who use non-espresso machines to brew coffee tend to enjoy a full-bodied flavor and a medium blend.",
+      cold_brew:"Cold brew drinkers like a fruity, light coffee, and are of the higher spenders at $40~$60 a month.",
+      capsule:"Those who use capsule coffee machines like Nespresso or Keurig like chocolatey coffees the best, at a medium roast."
+    };
+
+    const display = document.getElementById("display");
+
+    document.querySelectorAll("button").forEach(button => {
+      button.addEventListener("click", () => {
+        const container = button.closest(".container");
+        const display = container.querySelector(".left p");
+        display.textContent = textMap[button.id];
+
+      });
     });
   </script>
 </body>
