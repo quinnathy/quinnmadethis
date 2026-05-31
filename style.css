@@ -58,7 +58,9 @@ a:visited {
     color: purple;
     text-decoration: none;
 }
-
+ul {
+        padding-left: 1rem;
+    }
 .screenshot-frame {
   display: inline-block;
   border-top: 2px solid #8c8c8c;
@@ -97,8 +99,17 @@ hr {
     }
 
     p {
-        font-size: 1rem;
-        line-height: 1.4;
+        font-size: 0.9rem;
+        line-height: 1.2;
+    }
+
+    li {
+        font-size: 0.9rem;
+        line-height: 1.2;
+    }
+
+    ul {
+        padding-left: 1rem;
     }
 
     h4 {
