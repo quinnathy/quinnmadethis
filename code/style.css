@@ -1,16 +1,9 @@
-h4 {
-  font-size: 1.1em;
-}
-
-h3 {
-  font-size: 1.17em;
-}
-
 html, body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 main {
     margin: auto;
     max-width: 80ch;
@@ -22,12 +15,21 @@ main {
     line-height: 1.2em;
 }
 
-#fn {
-    font-family: "Consolas", "Lucida Console", monospace;
+.tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 2em;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
 }
 
-.extra2 {
-    display: none;
+h4 {
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+
+#fn {
+    font-family: "Consolas", "Lucida Console", monospace;
 }
 
 a:link {
@@ -60,10 +62,14 @@ a:visited {
   height: auto;
 }
 
+hr {
+    margin: 2rem 0;
+}
+
 
 @media screen and (max-aspect-ratio: 1/1) {
     html, body {
-        overflow-x: hidden; 
+        overflow-x: hidden;
     }
 
     main {

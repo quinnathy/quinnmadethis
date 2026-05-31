@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>code | quinn</title>
+    <meta name="description" content="quinn's website" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta property="og:image" content="../assets/webpreview.png">
+    <link rel="icon" type="image/jpg" href="../assets/star.png" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="image_src" href="../assets/webpreview.png" />
+
+    <link rel="stylesheet" href="https://unpkg.com/littlefoot/dist/littlefoot.css"/>
+  </head>
+  <body>
+    <main>
+      <h3 style="font-size: 1.5rem;">quinn's code showcase! <a href="/">&#8617;</a></h3>
+      <p>I started coding in Python in 2017, back when Codecademy had a functioning free tier and Stack Overflow was alive. As a result, I now speak Python more fluently than I speak Chinese -- a language I'm natively bilingual in -- and was a TA for several introductory Python courses at NYU.</p>
+
+      <p>While studying data science at NYU, I developed a strong foundation in statistical analysis and machine learning, and learned frontend development in my spare time as a hobby. My work in data analysis and ML found me doing just that at the NYC Mayor's Office of Management and Budget, and my frontend explorations somehow landed me collaborations with Dan Toomey of YouTube's Good Work, Michelladonna of TikTok's Shop Cats, and Neal of neal.fun.</p>
+
+      <hr>
+
+
+      <h4><a href="https://github.com/quinnathy/the-411-on-311" target="_blank">&#8689; The 411 on 311: NYC Service Requests, Mapped and Analyzed</a></h4>
+
+      <p><span class="tag" style="background-color: #2A380A; color: white;">Python</span><span class="tag" style="background-color: #1E3382; color: white;">Data Analysis</span><span class="tag" style="background-color: #4E7832; color: white;">Data Viz</span><span class="tag" style="background-color: #910A5A; color: white;">HTML/CSS</span><span class="tag" style="background-color: #067475; color: white;">JavaScript</span><span class="tag" style="background-color: #BF8604; color: white;">Frontend</span></p>
+
+      <p><b>Background: </b>The last apartment building I was in had a tenant group chat that I'm pretty sure fired off an average of ten 311 service requests per week. We had it all: mice, roaches, leaks, heat, noise... it made me think about how NYC is just this, but hundreds of thousands of times over.</p>
+      
+      <p>The city's 311 system receives millions of service requests every year, routed across 17 city agencies. But not every complaint gets the same response, as most of us probably know. So I looked at whether a New Yorker's ZIP code or the type of complaint they file predicts how long they'll wait for the city to act, and mapped it out for any New Yorker to see.</p>
+
+      <p><b>Data sources:</b></p>
+      <ul>
+        <li>15.35 million 311 service requests (Oct 2020 – Oct 2025) from <a href="https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9/about_data" target="_blank">NYC OpenData</a>, covering 202 ZIP codes, 248 complaint types, and 17 agencies.</li>
+        <li>NYC Modified Zip Code Tabulation Areas (MODZCTA) shapefile for geographic boundary mapping.</li>
+      </ul>
+
+      <p><b>Findings: </b>The average New Yorker waits ~20 days for a 311 complaint to close -- but that masks a range from 4 hours to nearly 2 years depending on complaint type and location. Complaints routed to the NYPD (noise, parking) close in hours; those sent to regulatory agencies (housing, food inspection, tree requests) can sit open for months. Full findings and methods are <a href="https://github.com/quinnathy/the-411-on-311" target="_blank">here</a>, and you can read the full story <a href="https://quinnmadethis.com/the-411-on-311" target="_blank">here</a>; it has pretty maps!</p>
+
+      <p><b>Key skills: </b>large-scale data cleaning, geospatial analysis (GeoPandas/GeoJSON), D3.js choropleth mapping, scroll-driven data storytelling (scrollytelling).</p>
+
+      <hr>
+
+      <h4><a href="https://github.com/quinnathy/arXiv-paper-recommendation/" target="_blank">&#8689; Folio: A Personalized arXiv Paper Recommendation Engine</a></h4>
+
+      <p><span class="tag" style="background-color: #2A380A; color: white;">Python</span><span class="tag" style="background-color: #175DA3; color: white;">Machine Learning</span><span class="tag" style="background-color: #784424; color: white;">NLP</span><span class="tag" style="background-color: #2C5231; color: white;">Information Retrieval</span><span class="tag" style="background-color: #CCA300; color: white;">Streamlit</span><span class="tag" style="background-color: #473A05; color: white;">Full Stack</span></p>
+
+      <p><b>Background: </b>For our senior project in our machine learning class, our group built a personalized arXiv paper recommendation engine. The app, called Folio, generates a daily feed of arXiv papers tailored to your research interests, which you can update in real time with feedback on what you like and don't like. It's built as a local Streamlit app that runs entirely on your machine -- no hosted vector database, no external service.</p>
+
+      <p>At onboarding, your research interests (entered as free text, curated tags, or imported from a public Google Scholar profile) are decomposed into 1–3 "research thread" vectors. Each day, those vectors drive retrieval from a k-means-clustered SPECTER2 embedding index of arXiv papers, and a custom scoring function balances relevance, recency, and feed diversity. Feedback (likes, saves, skips) updates your interest vectors in real time via an exponential moving average, so the feed drifts toward what you're engaging with.</p>
+
+      <p><b>Architecture highlights:</b></p>
+      <ul>
+        <li>Offline pipeline builds a memory-mapped SPECTER2 embedding matrix (~6 GB for the full corpus) and a k-means cluster index; retrieval at serve time is a dot-product search within candidate clusters, not a full scan.</li>
+        <li>Diversity scoring uses a greedy selection algorithm with a tunable diversity index (δ) that balances user-centroid coverage and cluster saturation: if you have two research threads, the feed doesn't collapse entirely into whichever one dominates by similarity.</li>
+        <li>Query search expands short queries into scientific retrieval text, then ranks a candidate pool with query similarity, user-profile similarity, recency, and lightweight lexical evidence from title and abstract.</li>
+        <li>Workspace tab lets you collect saved papers, generate AI synthesis and connection graphs (optional, via OpenAI API), and open PDFs for annotation in the Research Lab.</li>
+      </ul>
+
+      <p><b>Key skills: </b>vector search and embedding index design, k-means clustering for retrieval, recommendation system design (EMA centroid updates, diversity scoring), UMAP dimensionality reduction for embedding visualization, full-stack Streamlit app architecture, SQLite schema design.</p>
+
+      <hr>
+
+      <h4><a href="https://github.com/quinnathy/nyc-air-quality" target="_blank">&#8689; NYC Congestion Pricing Air Quality Analysis</a></h4>
+
+      <p><span class="tag" style="background-color: #2A380A; color: white;">Python</span><span class="tag" style="background-color: #1E3382; color: white;">Data Analysis</span><span class="tag" style="background-color: #4E7832; color: white;">Data Viz</span><span class="tag" style="background-color: #8C1212; color: white;">Causal Inference</span></p>
+
+      <p><b>Background: </b>Smog from car exhaust and emissions contribute to poor air quality in NYC, particularly in areas with high traffic density. So when NYC implemented congestion pricing, starting January 5, 2025, we wondered if air pollution would improve in return. For metrics, we used PM2.5 particulate matter concentrations from the NYC Department of Environmental Protection.</p>
+
+      <p><b>Data sources:</b></p>
+      <ul>
+        <li>Hourly PM2.5 readings from 18 NYC air quality monitoring stations across all boroughs (Jan 2024 – May 2025), from the NYC DOT/NYSDEC sensor network.</li>
+        <li>Boston daily PM2.5 data as an external control city.</li>
+        <li>Station location/metadata CSV for geographic filtering.</li>
+      </ul>
+
+      <p><b>Findings: </b>PM2.5 levels in NYC were meaningfully lower in spring 2025 than spring 2024, across all five boroughs and all hours of the day, but not enough so to reach a significance threshold. Read more about the methods and results <a href="https://github.com/quinnathy/nyc-air-quality" target="_blank">here</a>!</p>
+
+      <p><b>Key skills: </b>multi-source data ingestion, time series aggregation, causal inference (DiD), statistical hypothesis testing, data visualization.</p>
+
+      <hr>
+
+
+    </main>
+
+    <script src="https://unpkg.com/littlefoot/dist/littlefoot.js"
+          type="application/javascript">
+    </script>
+    <script type="application/javascript">
+    littlefoot.littlefoot()
+    </script>
+
+  </body>
+</html>
