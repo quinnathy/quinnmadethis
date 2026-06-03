@@ -38,15 +38,34 @@
       <p>The following are three projects that showcase my work in data analysis, statistical testing, and machine learning. The repositories are hyperlinked in the project titles. To see more of my frontend work, you can have a browse <a href="../sites/index.html" target="_blank">here</a>.</p>
 
       <hr>
+      <h4><a href="https://github.com/qimiankkk/arXiv-paper-recommendation" target="_blank">&#8689; Folio: A Personalized arXiv Paper Recommendation Engine</a></h4>
 
+      <p><span class="tag" style="background-color: #2A380A; color: white;">Python</span><span class="tag" style="background-color: #175DA3; color: white;">Machine Learning</span><span class="tag" style="background-color: #784424; color: white;">NLP</span><span class="tag" style="background-color: #2C5231; color: white;">Information Retrieval</span><span class="tag" style="background-color: #CCA300; color: white;">Streamlit</span><span class="tag" style="background-color: #473A05; color: white;">Full Stack</span></p>
+
+      <p><b>Background: </b>For our senior ML project, our group built a personalized arXiv paper recommendation engine. Folio generates a daily feed of papers tailored to your research interests, updated in real time via feedback — runs entirely as a local Streamlit app.</p>
+
+      <p>At onboarding, your interests (free text, curated tags, or imported from Google Scholar) are decomposed into 1–3 "research thread" vectors. Those vectors drive daily retrieval from a k-means-clustered SPECTER2 embedding index, with a custom scoring function balancing relevance, recency, and feed diversity. Likes, saves, and skips update your interest vectors via exponential moving average.</p>
+
+      <p>I helped in prototyping and implementing the recommendation system, including the k-means clustering and diversity scoring components. I also developed Folio's research lab view, and worked on the user interface.</p>
+
+      <p><b>Architecture highlights:</b></p>
+      <ul>
+        <li>Offline pipeline builds a memory-mapped SPECTER2 embedding matrix (~6 GB) and k-means cluster index; retrieval is dot-product search within candidate clusters, not a full scan.</li>
+        <li>Diversity scoring uses greedy selection with a tunable diversity index (δ) to prevent the feed from collapsing into whichever research thread dominates by similarity.</li>
+        <li>Query search expands short queries into scientific retrieval text, then ranks candidates by query similarity, profile similarity, recency, and lexical signals from title/abstract.</li>
+        <li>Workspace tab supports paper saving, AI synthesis and connection graphs (via OpenAI API), and PDF annotation in a Research Lab view.</li>
+      </ul>
+
+      <p><b>Key skills: </b>vector search and embedding index design, k-means clustering for retrieval, recommendation system design (EMA centroid updates, diversity scoring), UMAP dimensionality reduction, full-stack Streamlit architecture, SQLite schema design.</p>
+
+      <hr>
+      
 
       <h4><a href="https://github.com/quinnathy/the-411-on-311" target="_blank">&#8689; The 411 on 311: NYC Service Requests, Mapped and Analyzed</a></h4>
 
       <p><span class="tag" style="background-color: #2A380A; color: white;">Python</span><span class="tag" style="background-color: #1E3382; color: white;">Data Analysis</span><span class="tag" style="background-color: #4E7832; color: white;">Data Viz</span><span class="tag" style="background-color: #910A5A; color: white;">HTML/CSS</span><span class="tag" style="background-color: #067475; color: white;">JavaScript</span><span class="tag" style="background-color: #BF8604; color: white;">Frontend</span></p>
 
-      <p><b>Background: </b>The last apartment building I was in had a tenant group chat that I'm pretty sure fired off an average of ten 311 service requests per week. We had it all: mice, roaches, leaks, heat, noise... it made me think about how NYC is just this, but hundreds of thousands of times over.</p>
-      
-      <p>The city's 311 system receives millions of service requests every year, routed across 17 city agencies. But not every complaint gets the same response, as most of us probably know. So I looked at whether a New Yorker's ZIP code or the type of complaint they file predicts how long they'll wait for the city to act, and mapped it out with interactive tooltips.</p>
+      <p><b>Background: </b>My last apartment building had a tenant group chat that fired off roughly ten 311 requests a week — mice, roaches, leaks, heat, noise. NYC is just that, but hundreds of thousands of times over. The city's 311 system gets millions of requests a year routed across 17 agencies, but not every complaint gets the same response. I looked at whether ZIP code or complaint type predicts how long a New Yorker waits for the city to act, and mapped it out with interactive tooltips.</p>
 
       <p><b>Data sources:</b></p>
       <ul>
@@ -54,37 +73,19 @@
         <li>NYC Modified Zip Code Tabulation Areas (MODZCTA) shapefile for geographic boundary mapping.</li>
       </ul>
 
-      <p><b>Findings: </b>The average New Yorker waits ~20 days for a 311 complaint to close -- but that masks a range from 4 hours to nearly 2 years depending on complaint type and location. Complaints routed to the NYPD (noise, parking) close in hours; those sent to regulatory agencies (housing, food inspection, tree requests) can sit open for months. Full findings and methods are <a href="https://github.com/quinnathy/the-411-on-311" target="_blank">here</a> <a href="#fn:2">footnote</a>, and you can read the full story <a href="https://quinnmadethis.com/the-411-on-311" target="_blank">here</a>; it has pretty maps!</p>
+      <p><b>Findings: </b>The average wait is ~20 days — but that masks a range from 4 hours to nearly 2 years depending on complaint type and location. Complaints routed to the NYPD (noise, parking) close in hours; those sent to regulatory agencies (housing, food inspection, tree requests) can sit open for months. Full findings and methods are <a href="https://github.com/quinnathy/the-411-on-311" target="_blank">here</a> <a href="#fn:2">footnote</a>, and you can read the full story <a href="https://quinnmadethis.com/the-411-on-311" target="_blank">here</a>; it has pretty maps!</p>
 
       <p><b>Key skills: </b>large-scale data cleaning, geospatial analysis (GeoPandas/GeoJSON), D3.js choropleth mapping, scroll-driven data storytelling (scrollytelling).</p>
 
       <hr>
 
-      <h4><a href="https://github.com/quinnathy/arXiv-paper-recommendation/" target="_blank">&#8689; Folio: A Personalized arXiv Paper Recommendation Engine</a></h4>
-
-      <p><span class="tag" style="background-color: #2A380A; color: white;">Python</span><span class="tag" style="background-color: #175DA3; color: white;">Machine Learning</span><span class="tag" style="background-color: #784424; color: white;">NLP</span><span class="tag" style="background-color: #2C5231; color: white;">Information Retrieval</span><span class="tag" style="background-color: #CCA300; color: white;">Streamlit</span><span class="tag" style="background-color: #473A05; color: white;">Full Stack</span></p>
-
-      <p><b>Background: </b>For our senior project in our machine learning class, our group built a personalized arXiv paper recommendation engine. The app, called Folio, generates a daily feed of arXiv papers tailored to your research interests, which you can update in real time with feedback on what you like and don't like. It's built as a local Streamlit app that runs entirely on your machine.</p>
-
-      <p>At onboarding, your research interests (entered as free text, curated tags, or imported from a public Google Scholar profile) are decomposed into 1–3 "research thread" vectors. Each day, those vectors drive retrieval from a k-means-clustered SPECTER2 embedding index of arXiv papers, and a custom scoring function balances relevance, recency, and feed diversity. Feedback (likes, saves, skips) updates your interest vectors in real time via an exponential moving average.</p>
-
-      <p><b>Architecture highlights:</b></p>
-      <ul>
-        <li>Offline pipeline builds a memory-mapped SPECTER2 embedding matrix (~6 GB for the full corpus) and a k-means cluster index; retrieval at serve time is a dot-product search within candidate clusters, not a full scan.</li>
-        <li>Diversity scoring uses a greedy selection algorithm with a tunable diversity index (δ) that balances user-centroid coverage and cluster saturation: if you have two research threads, the feed doesn't collapse entirely into whichever one dominates by similarity.</li>
-        <li>Query search expands short queries into scientific retrieval text, then ranks a candidate pool with query similarity, user-profile similarity, recency, and lightweight lexical evidence from title and abstract.</li>
-        <li>Workspace tab lets you collect saved papers, generate AI synthesis and connection graphs (optional, via OpenAI API), and open PDFs for annotation in the Research Lab.</li>
-      </ul>
-
-      <p><b>Key skills: </b>vector search and embedding index design, k-means clustering for retrieval, recommendation system design (EMA centroid updates, diversity scoring), UMAP dimensionality reduction for embedding visualization, full-stack Streamlit app architecture, SQLite schema design.</p>
-
-      <hr>
+      
 
       <h4><a href="https://github.com/quinnathy/nyc-air-quality" target="_blank">&#8689; NYC Congestion Pricing Air Quality Analysis</a></h4>
 
       <p><span class="tag" style="background-color: #2A380A; color: white;">Python</span><span class="tag" style="background-color: #1E3382; color: white;">Data Analysis</span><span class="tag" style="background-color: #4E7832; color: white;">Data Viz</span><span class="tag" style="background-color: #8C1212; color: white;">Causal Inference</span></p>
 
-      <p><b>Background: </b>While working in the Policy & Operations task force in NYC OMB, we looked at the unexpected effects of congestion pricing, and I focused on air quality. Smog from car exhaust and emissions contribute to poor air quality in NYC, particularly in areas with high traffic density. So when NYC implemented congestion pricing, starting January 5, 2025, we wondered if air pollution would improve in return. For metrics, we used PM2.5 particulate matter concentrations from the NYC Department of Environmental Protection.</p>
+      <p><b>Background: </b>While working in the Policy & Operations task force at NYC OMB, I focused on one of congestion pricing's hoped-for side effects: air quality improvement. Car exhaust is a major PM2.5 source in high-traffic areas, so when the CRZ took effect January 5, 2025, we set out to measure whether it moved the needle.</p>
 
       <p><b>Data sources:</b></p>
       <ul>
@@ -93,7 +94,7 @@
         <li>Station location/metadata CSV for geographic filtering.</li>
       </ul>
 
-      <p><b>Findings: </b>PM2.5 levels in NYC were meaningfully lower in spring 2025 than spring 2024, across all five boroughs and all hours of the day, but not enough so reach a significance threshold <a href="#fn:3">footnote</a>. Read more about the methods and results <a href="https://github.com/quinnathy/nyc-air-quality" target="_blank">here</a>!</p>
+      <p><b>Findings: </b>PM2.5 was meaningfully lower across all five boroughs in spring 2025 vs. spring 2024 — but the same drop appears at control sites, making the CRZ hard to isolate. A difference-in-differences model using Boston as a control estimates a ~6% Manhattan-specific reduction, though it just misses the conventional significance threshold (p = 0.063). Directionally consistent with the CRZ working, but not conclusive yet.</p>
 
       <p><b>Key skills: </b>multi-source data ingestion, time series aggregation, causal inference (DiD), statistical hypothesis testing, data visualization.</p>
 
@@ -108,11 +109,7 @@
           <p></p>
         </li>
         <li class="footnote" id="fn:2">
-          <p id="fn">i also unearthed a years-long grudge between a building off the corner of Central Park and a food vendor; more details in the README</p>
-          <p></p>
-        </li>
-        <li class="footnote" id="fn:3">
-          <p id="fn">specifically, the standard significance threshold of p < 0.05 was not reached; whether or not the effect is practically significant is up for interpretation</p>
+          <p id="fn">i also unearthed a years-long Sisyphean grudge between a building off the corner of Central Park and a food vendor; more details in the README.</p>
           <p></p>
         </li>
       </ol>
