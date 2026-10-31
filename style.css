@@ -54,19 +54,24 @@ h4 {
 
 a:link {
     color: blue;
-    text-decoration: underline;
-    text-underline-offset: 0.1rem;
+    text-decoration: none;
     transition: 0.3s;
+    background: linear-gradient(to top, yellow 50%, transparent 30%);
+    background-size: 100% 100%;
+    font-weight: 550;
+
 }
 
 a:hover {
-    background-color: yellow;
+    background: none;
+    background-color: #FFDD00;
+    color: black;
 }
 
 a:visited {
     color: purple;
-    text-decoration: underline dotted;
 }
+
 ul {
         padding-left: 1rem;
     }
