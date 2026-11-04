@@ -100,6 +100,10 @@ hr {
   margin-top: 1vh;
 }
 
+iframe {
+    width: 100%;
+}
+
 .toc li {
   display: flex;
   align-items: baseline;
@@ -119,6 +123,22 @@ hr {
 .littlefoot {
     --popover-transition: opacity 0.2s ease;
     --popover-font-family: sans-serif;
+}
+
+.nutshell-bubble-overflow-close {
+    display: none;
+}
+
+.nutshell-bubble-from {
+    display:none;
+}
+
+.nutshell-bubble-overflow-section {
+    padding: 0.1vw 1vw;
+}
+
+.nutshell-bubble-overflow-embed-button {
+    display: none;
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
